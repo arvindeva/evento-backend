@@ -6,11 +6,14 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
-func GetArtistsByTerm(term string) string {
+func GetArtistsByTerm(c *gin.Context) {
 	fmt.Println("Making GET request...")
 	fmt.Println("Searching artists...")
+	term := c.Param("term")
 	setlistFmApiKey, _ := os.LookupEnv("SETLIST_FM_API_KEY")
 
 	// make GET request to API to get user by ID
@@ -42,5 +45,6 @@ func GetArtistsByTerm(term string) string {
 
 	// clean up memory after execution
 	defer response.Body.Close()
-	return formattedData
+
+	c.String(http.StatusOK, formattedData)
 }
