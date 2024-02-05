@@ -4,6 +4,7 @@ import (
 	"evento/search-api/handlers"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-contrib/cors"
@@ -29,7 +30,9 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.Default())
-
+	r.GET("/", func(c *gin.Context) {
+		c.String(http.StatusOK, "hello world")
+	})
 	// search artist by name.
 	r.GET("/search/artists/:term", handlers.GetArtistsByTerm)
 	// search events by artist mbid.
